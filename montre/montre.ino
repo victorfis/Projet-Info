@@ -1,14 +1,17 @@
 /* 
- * TimeSerial.pde
- * example code illustrating Time library set through serial port messages.
- *
- * Messages consist of the letter T followed by ten digit time (as seconds since Jan 1 1970)
- * you can send the text on the next line using Serial Monitor to set the clock to noon Jan 1 2013
- T1357041600  
- *
- * A Processing example sketch to automatically send the messages is included in the download
- * On Linux, you can use "date +T%s\n > /dev/ttyACM0" (UTC time zone)
- * echo -e "$(date +T%s)\n" > /dev/ttyACM0
+ *  @Project Name: Watch'INT
+ *  @author: CHEN Muyao, FIS Victor
+ *  @date: 13/03/2017
+ *  @discription: Prototype d'une montre connectée
+ *  
+ *  This prototype is aimed at showing the time on the OLED screen by synchronizing the time via Bluetooth
+ *  Time-sychronizing messages consists of the letter T followed by ten digit time (as seconds since Jan 1 1970)
+ *  For example, we can send the text on the next line using Bluetooth Terminal to set the clock to noon Jan 1 2013: T1357041600  
+ *  
+ *  Bluetooth TX-10(RX)
+ *  Bluetooth RX-11(TX)
+ *  Screen SDA_PIN-A4
+ *  Screen SCL_PIN-A5
  */ 
  
 #include <TimeLib.h>
