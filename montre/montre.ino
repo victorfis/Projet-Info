@@ -14,44 +14,48 @@
  *  Screen SCL_PIN-A5
  */ 
  
-#include <TimeLib.h>
-#include <Adafruit_ssd1306syp.h>
-#include <SoftwareSerial.h>
+#include <TimeLib.h>    // Library of Time
+#include <Adafruit_ssd1306syp.h>    // Library of the screen
+#include <SoftwareSerial.h>    // Library of software serial communication
 
-SoftwareSerial mySerial(10, 11); // RX, TX
+// Define the pins for RX, TX on the Arduino board respectively to connect with Bluetooth
+SoftwareSerial mySerial(10, 11);    
 
-#define SDA_PIN A4
+// Define the pins for the I²C Bus to communicate with OLED
+#define SDA_PIN A4    
 #define SCL_PIN A5
-
+// Define the objet "display" of OLED
 Adafruit_ssd1306syp display(SDA_PIN,SCL_PIN);
 
-#define TIME_HEADER  "T"   // Header tag for serial time sync message
+#define TIME_HEADER  "T"    // Header tag for serial time sync message
 #define TIME_REQUEST  7    // ASCII bell character requests a time sync message 
 
 void setup()  {
-  //Serial.begin(9600);
-  //while (!Serial) ; // Needed for Leonardo only
+  // Initialisation of Bluetooth communication module
+  mySerial.begin(38400);    // Set the baud of port to 38400 in order to communicate with Bluetooth
+  pinMode(13, OUTPUT);    // Define the indicator Led PIN 13 as output
+  setSyncProvider(requestSync);    // Set function to call when sync required
+  mySerial.println("Waiting for sync message");    // Show the sync require message on the bluetooth terminal
+  delay(1000);    // Wait for 1s
   
-  mySerial.begin(38400);
-  
-  pinMode(13, OUTPUT);
-  setSyncProvider( requestSync);  //set function to call when sync required
-  mySerial.println("Waiting for sync message");
-  delay(1000);
-  display.initialize();
-  display.setTextSize(2);
-  display.setTextColor(WHITE);
-  display.setCursor(10,20);
-  display.print("WATCH'INT");
-  display.update();
+  // Initialisation of OLED Screen module 
+  display.initialize();    // Initialize the screen
+  display.setTextSize(2);    // set the text size
+  display.setTextColor(WHITE);    // set the text color as white
+  display.setCursor(10,20);    // set the cursor
+  display.print("WATCH'INT");    // show the welcome page in waiting for the sync
+  display.update();    // update all the changes to the screen
 
 
 }
 
 void loop(){    
+  // if the bluetooth serial communication is established, then process the synchronisation
   if (mySerial.available()) {
     processSyncMessage();
   }
+ 
+  // if time status is not set(false),then 
   if (timeStatus()!= timeNotSet) {
     display.clear();
     digitalClockDisplay();  
