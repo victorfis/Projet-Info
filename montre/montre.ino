@@ -21,35 +21,35 @@ Adafruit_ssd1306syp display(SDA_PIN,SCL_PIN);
 #define TIME_REQUEST  7    // ASCII bell character requests a time sync message 
 
 void setup()  {
-  Serial.begin(9600);
+  Serial.begin(9600); //enable bluetooth with tx and rx pins
   while (!Serial) ; // Needed for Leonardo only
-  pinMode(13, OUTPUT);
+  pinMode(13, OUTPUT);  //set 13th pin as output
   setSyncProvider( requestSync);  //set function to call when sync required
   Serial.println("Waiting for sync message");
-  delay(1000);
+  delay(1000);  //1 sec delay
   //Initialization of OLED
-  display.initialize(); 
-  display.setTextSize(2);
-  display.setTextColor(WHITE);
-  display.setCursor(10,20);
-  display.print("WATCH'INT");
+  display.initialize(); //initialize the screen 
+  display.setTextSize(2); //set the text size 
+  display.setTextColor(WHITE);  //set the text color (white seen as blue actually)
+  display.setCursor(10,20);  //set the position of the 1st letter
+  display.print("WATCH'INT"); //set the text WATCH'INT
   display.update();
 }
 
 void loop(){    
-  if (Serial.available()) {
-    processSyncMessage();
+  if (Serial.available()) { //if something is received
+    processSyncMessage(); //call a function to react to received messages
   }
-  if (timeStatus()!= timeNotSet) {
-    display.clear();
-    digitalClockDisplay();  
+  if (timeStatus()!= timeNotSet) { //if the time is set
+    display.clear(); 
+    digitalClockDisplay();  //it is displayed
   }
-  if (timeStatus() == timeSet) {
+  if (timeStatus() == timeSet) {  //if the time is set
     digitalWrite(13, HIGH); // LED on if synced
   } else {
     digitalWrite(13, LOW);  // LED off if needs refresh
   }
-  delay(1000);
+  delay(1000); //1 sec delay
 }
 
 void digitalClockDisplay(){
@@ -57,11 +57,11 @@ void digitalClockDisplay(){
   display.setTextSize(2);
   display.setTextColor(WHITE);
   display.setCursor(10,20);
-  display.print(hour());
+  display.print(hour());//diplay time
   printDigits(minute());
   printDigits(second());
-  display.println(); 
-  display.print(day());
+  display.println(); // equivalent to \n
+  display.print(day());//display date
   display.print("/");
   display.print(month());
   display.print("/");
