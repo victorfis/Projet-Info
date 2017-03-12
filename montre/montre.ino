@@ -72,9 +72,9 @@ void digitalClockDisplay(){
 void printDigits(int digits){
   // utility function for digital clock display: prints preceding colon and leading 0
   display.print(":");
-  if(digits < 10)
-    display.print('0');
-  display.print(digits);
+  if(digits < 10)     // if the number is between 0 and 9
+    display.print('0'); //print a 0 before
+  display.print(digits); //display minutes or seconds
 }
 
 
